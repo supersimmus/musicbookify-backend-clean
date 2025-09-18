@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-  const { bookTitle } = req.body;
+  const { bookTitle } = await req.json(); // ← tohle je klíčové
   if (!bookTitle) return res.status(400).json({ error: 'Missing bookTitle' });
 
   const clientId = process.env.SPOTIFY_CLIENT_ID;
