@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
-  spotify_id TEXT UNIQUE NOT NULL,
-  access_token TEXT NOT NULL,
-  refresh_token TEXT NOT NULL,
-  expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
-  updated_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);

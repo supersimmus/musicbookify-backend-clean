@@ -1,17 +1,33 @@
-name: musicbookify_backend
-version: 1.0.0
+name: book_music_app
+description: A new Flutter project.
+
+publish_to: 'none'
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
-  shelf: ^1.4.0
-  shelf_router: ^1.0.0
+  flutter:
+    sdk: flutter
+  flutter_dotenv: ^5.0.2
   http: ^0.13.6
-  postgres: ^2.4.1
-  shelf_cors_headers: ^0.1.5
-  # ostatní závislosti…
+  url_launcher: ^6.3.0
+  flutter_web_auth:
+    path: ../flutter_web_auth_local
+  google_mobile_ads: ^5.1.0
+  in_app_purchase: ^3.1.11
+  shared_preferences: ^2.3.2 
+  
 
 
 
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - .env
 
