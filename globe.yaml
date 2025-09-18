@@ -1,0 +1,6 @@
+name: musicbookify-backend
+description: Spotify OAuth backend
+
+routes:
+  /callback: callback_server.dart
+  /me:       me.dart

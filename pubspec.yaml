@@ -1,0 +1,17 @@
+name: musicbookify_backend
+version: 1.0.0
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+
+dependencies:
+  shelf: ^1.4.0
+  shelf_router: ^1.0.0
+  http: ^0.13.6
+  postgres: ^2.4.1
+  shelf_cors_headers: ^0.1.5
+  # ostatní závislosti…
+
+
+
+

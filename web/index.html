@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MusicBookify</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; }
+    form { margin-bottom: 1.5rem; }
+    input, select, button { padding: .5rem; font-size: 1rem; }
+    .playlist { display: inline-block; margin: .5rem; vertical-align: top; }
+  </style>
+</head>
+<body>
+  <h1>MusicBookify</h1>
+
+  <form id="recForm">
+    <input
+      id="bookInput"
+      type="text"
+      placeholder="Enter book title…"
+      required
+      style="width:60%;"
+    />
+    <select id="providerSelect">
+      <option value="spotify">Spotify</option>
+      <option value="youtube">YouTube</option>
+    </select>
+    <button type="submit">Get Playlists</button>
+  </form>
+
+  <div id="results"></div>
+
+  <script>
+    // Base URL tvého nasazeného backendu
+    const base = 'https://musicbookify-backend-production.up.railway.app';
+
+    const form = document.getElementById('recForm');
+    const results = document.getElementById('results');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      results.innerHTML = '<p>Loading…</p>';
+
+      const book    = encodeURIComponent(document.getElementById('bookInput').value);
+      const provider = document.getElementById('providerSelect').value;
+
+      const url = `${base}/recommend`
+                + `?spotify_id=31u6wwmhqh36iq5efzs52hvyt44y`
+                + `&provider=${provider}`
+                + `&book_title=${book}`;
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(await res.text());
+        const { book_title, query, provider: prov, playlists } = await res.json();
+
+        results.innerHTML = `
+          <h2>“${book_title}” → ${prov}</h2>
+          <p><em>Search phrase:</em> ${query}</p>
+          <div id="list"></div>
+        `;
+
+        const list = document.getElementById('list');
+        playlists.forEach(p => {
+          const div = document.createElement('div');
+          div.className = 'playlist';
+
+          let embed = '';
+          if (prov === 'spotify') {
+            const id = new URL(p.url).pathname.split('/').pop();
+            embed = `<iframe
+                        src="https://open.spotify.com/embed/playlist/${id}"
+                        width="300" height="380" frameborder="0"
+                        allowtransparency="true" allow="encrypted-media">
+                     </iframe>`;
+          } else {
+            const params = new URLSearchParams(new URL(p.url).search);
+            const id     = params.get('list');
+            embed = `<iframe
+                        width="300" height="380"
+                        src="https://www.youtube.com/embed/videoseries?list=${id}"
+                        frameborder="0"
+                        allow="autoplay; encrypted-media"
+                        allowfullscreen>
+                     </iframe>`;
+          }
+
+          div.innerHTML = `
+            <h3>${p.name}</h3>
+            ${embed}
+          `;
+          list.appendChild(div);
+        });
+      } catch (err) {
+        results.innerHTML = `<p style="color:red">Error: ${err.message}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
